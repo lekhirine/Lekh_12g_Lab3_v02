@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>lab 3</title>
+</head>
+<body>
+    
+    <p><strong>№1</strong></p>
+
+    <label for="rows">Рядки:</label>
+    <input type="number" id="rows" min="1"><br>
+    <label for="cols">Стовпчики:</label>
+    <input type="number" id="cols" min="1"><br>
+    <button id="generateButton">Масив</button>
+    <button id="findButton">Число</button>
+    <div id="arrayOutput"></div>
+    <div id="result_1"></div>
+    
+    <script>
+    document.getElementById('generateButton').addEventListener('click', function() {
+        let rows = parseInt(document.getElementById('rows').value);
+        let cols = parseInt(document.getElementById('cols').value);
+    
+        let array = [];
+        for (let i = 0; i < rows; i++) {
+            let row = [];
+            for (let j = 0; j < cols; j++) {
+                let randomNumber = Math.floor(Math.random() * 10);
+                row.push(randomNumber);
+            }
+            array.push(row);
+        }
+    
+        let arrayOutput = document.getElementById('arrayOutput');
+        arrayOutput.innerText = 'Масив: \n';
+        array.forEach(function(row) {
+        arrayOutput.innerText += row.join(' ') + '\n';
+        });
+    });
+    
+    document.getElementById('findButton').addEventListener('click', function() {
+        let arrayOutput = document.getElementById('arrayOutput');
+        let arrayText = arrayOutput.innerText;
+        if (!arrayText.includes('Масив')) {
+            console.log('Спочатку натисніть кнопку!');
+            return;
+        }
+    
+        let rows = arrayText.trim().split('\n').map(row => row.split(' ').map(Number));
+    
+        let counts = {};
+        rows.forEach(function(row) {
+            row.forEach(function(number) {
+                counts[number] = (counts[number] || 0) + 1;
+            });
+        });
+    
+        let maxCount = Math.max(...Object.values(counts));
+    
+        let mostCommonNumbers = Object.keys(counts).filter(key => counts[key] === maxCount);
+    
+        if (mostCommonNumbers.length === 1) {
+            console.log('Найчастіше число:', mostCommonNumbers[0], 'Кількість появ:', maxCount);
+        } else {
+            mostCommonNumbers.forEach(function(number) {
+                console.log('Число:', number, 'Кількість появ:', counts[number]);
+            });
+        }
+    });
+    </script>
+    
+    
+    <p><strong>№2</strong></p>
+
+    <label for="textInput">Текст:</label><br>
+    <textarea id="textInput" rows="10" cols="20"></textarea><br>
+    <button id="countButton">Знайти</button><br>
+    
+    <script>
+    document.getElementById('countButton').addEventListener('click', function() {
+        let text = document.getElementById("textInput").value.trim();
+        let sentences = text.match(/[^.!?]+[.!?]+/g);
+    
+        if (!sentences) {
+            console.log("Помилка!");
+            return;
+        }
+    
+        sentences.forEach(function(sentence, index) {
+            let wordCount = sentence.split(/\s+/).filter(function(word) {
+                return word.trim() !== "";
+            }).length;
+            console.log("Речення " + (index + 1) + ": " + wordCount + " слів.");
+        });
+    });
+    </script>
+    
+
+    <p><strong>№3</strong></p>
+
+    <label for="fibInput">Значення n:</label>
+    <input type="number" id="fibInput"><br>
+    <button id="calculateButton">Знайти</button>
+    <div id="result_3"></div>
+    
+    <script>
+        document.getElementById('calculateButton').addEventListener('click', function() {
+            let n = parseInt(document.getElementById("fibInput").value);
+        
+            if (isNaN(n) || n < 0) {
+                console.log("Введіть додатне ціле число!");
+                return;
+            }
+        
+            let fib1 = 0;
+            let fib2 = 1;
+            let fib = 0;
+        
+            for (let i = 2; i <= n; i++) {
+                fib = fib1 + fib2;
+                fib1 = fib2;
+                fib2 = fib;
+            }
+        
+            console.log("n-те число Фібоначчі: " + fib);
+        });
+        </script>
+    
+
+</body>
+</html>
